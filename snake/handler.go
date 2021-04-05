@@ -1,6 +1,7 @@
 package snake
 
 import (
+	"time"
 	"github.com/nsf/termbox-go"
 )
 
@@ -33,6 +34,32 @@ func listen(ch chan keyPress) {
 			}
 		case termbox.EventError:
 			panic(e.Err)
+		}
+	}
+}
+
+func (s *Snake) HandlePresses() {
+	
+	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
+	if e := termbox.Flush(); e != nil {
+		panic(e)
+	}
+
+run:
+
+	for {
+		select {
+		case key := <-keyChan:
+			switch key.direction {
+			case 5:
+				break run
+			default:
+				s.direction = key.direction
+				s.Move()
+			}
+		default:
+			s.Move()
+			time.Sleep(100 * time.Millisecond)
 		}
 	}
 }
