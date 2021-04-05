@@ -1,9 +1,10 @@
-module snake
+module game
 
 go 1.16
 
+replace snake => ./snake
+
 require (
-	github.com/mattn/go-runewidth v0.0.12 // indirect
 	github.com/nsf/termbox-go v1.1.0 // indirect
-	github.com/rivo/uniseg v0.2.0 // indirect
+	snake v0.0.0-00010101000000-000000000000
 )
