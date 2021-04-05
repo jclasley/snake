@@ -3,6 +3,7 @@ package snake
 import (
 	"github.com/nsf/termbox-go"
 	"math/rand"
+	"errors"
 )
 
 var (
@@ -12,6 +13,12 @@ var (
 	green = termbox.ColorGreen
 	white = termbox.ColorWhite
 	food *coord
+	gameEvent = make(chan int)
+)
+
+const (
+	MOVING = iota
+	DEAD
 )
 
 type coord struct{
@@ -41,6 +48,9 @@ func (s *Snake) Move() {
 		hy--
 	case DOWN:
 		hy++
+	}
+	if err := s.CheckDeath(hx, hy); err != nil {
+		gameEvent <- DEAD
 	}
 	s.segments = append(s.segments, &coord{hx, hy})
 
@@ -79,4 +89,12 @@ func randLocationInBounds() (int, int) {
 func (s *Snake) RenderInit() {
 	x, y := randLocationInBounds()
 	s.segments = append(s.segments, &coord{x, y})
+}
+
+func (s *Snake) CheckDeath(x,y int) error {
+	c := termbox.GetCell(x, y)
+	if c.Ch == block && c.Fg == white {
+		return errors.New("You died.")
+	}
+	return nil
 }

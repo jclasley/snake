@@ -39,11 +39,7 @@ func listen(ch chan keyPress) {
 }
 
 func (s *Snake) HandlePresses() {
-	
-	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
-	if e := termbox.Flush(); e != nil {
-		panic(e)
-	}
+
 
 run:
 
@@ -57,6 +53,7 @@ run:
 				s.direction = key.direction
 				s.Move()
 			}
+
 		default:
 			s.Move()
 			time.Sleep(100 * time.Millisecond)

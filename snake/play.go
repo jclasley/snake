@@ -21,7 +21,7 @@ func Start() {
 	}
 	defer termbox.Close()
 	InitVars()
-
+	draw()
 	NewGame()
 	go listen(keyChan)
 	s.HandlePresses()
